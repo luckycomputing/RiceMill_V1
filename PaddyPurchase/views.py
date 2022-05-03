@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from .models import PaddyPurchase
 from django.http import FileResponse
 from fpdf import FPDF
@@ -96,6 +96,30 @@ def save_record(request):
 
         var_data_save.save()
     return redirect(add_record)
+
+
+# For UPDATING RECORD
+def update_record(request):
+    dbRecords = PaddyPurchase.objects.all()
+    dbRecords_dict = {
+        'PaddyPurchase': dbRecords,
+    }
+    return render(request, 'update_record.html', dbRecords_dict)
+
+# For SEARCHING RECORD
+def search_record(request):
+    if request.method == 'POST':
+        # Getting ALL DATABASE RECORDS
+        dbRecords = PaddyPurchase.objects.all()
+        # For Getting Reference Number AKA Primary Key
+        ref_no_for_search = request.POST.get('ref_no')
+        # Designate the model
+        dbRecords_to_update = PaddyPurchase.objects.get(pk=ref_no_for_search)
+        dbRecords_dict_to_update = {
+            'PaddyPurchase': dbRecords,
+            'SearchedRecord': dbRecords_to_update
+        }
+        return render(request, 'update_record.html', dbRecords_dict_to_update)
 
 
 # View for DOWNLOADING REPORTS PAGE

@@ -4,31 +4,32 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>{% block title %}Add Record{% endblock %}</title>
+    <title>{% block title %}Update Record{% endblock %}</title>
     {#    This Template CSS#}
     {% block additional_css %}
-        <link rel="stylesheet" href="{% static 'css/add.css' %}">
+        <link rel="stylesheet" href="{% static 'css/update.css' %}">
     {% endblock %}
 </head>
 <body>
 {% block body %}
     <div class="bodyContainer">
-        <form action="save" method="POST" id="form">
+        <form action="update_record/search" method="POST" id="form">
             {% csrf_token %}
-            <h1 id='add_heading'>Update Record</h1>
             <div class="formElements">
-                <label for="ref_no">Ref. No.:
-                    <strong>{{ ref_no }}</strong>
-                </label>
+                <h1 id='update_heading'>Update Record</h1>  
             </div>
+            <label for="ref_no">Ref. No.:
+                <input type='number' name="ref_no" id="ref_no">
+                <input class="btn" type='submit' name="ref_no_search" value="Search">
+            </label>
             <div class="formElements">
                 <label for="token_no">Token. No.:
-                    <input type="text" name="token_no" id="token_no" maxlength="8">
+                    <input type="text" name="token_no" id="token_no" maxlength="8" value={{ SearchedRecord.token_no }}>
                 </label>
             </div>
             <div class="formElements">
                 <label for="agent_name">Agent Name:
-                    <input type="text" name="agent_name" id="agent_name" maxlength="20">
+                    <input type="text" name="agent_name" id="agent_name" maxlength="20" value={{ SearchedRecord.agent_name }}>
                 </label>
             </div>
             <div class="formElements">
@@ -232,7 +233,7 @@
             </div>
             {#            Code for Form Buttons#}
             <div>
-                <input type="submit" class="btn">
+                <input type="submit" class="btn" value="Update Record">
                 {#                <input type="reset" class="btn">#}
             </div>
         </form>
