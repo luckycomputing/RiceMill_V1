@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}{% endblock %}</title>
+
+    {#    Base HTML - CSS Sheet#}
+    <link rel="stylesheet" href="{% static 'css/base.css' %}">
+
+    {#    Google Fonts - ROBOTO#}
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
+
+    {#    Additional Style Sheet#}
+    {% block additional_css %}{% endblock %}
+</head>
+<body>
+<div class="container">
+    <div class="navBar">
+        <a href="{% url 'index' %}" class="navItem">Dashboard</a>
+        <a href="{% url 'add_record' %}" class="navItem">Add Record</a>
+        <a href="#" class="navItem">View Record</a>
+        <a href="#" class="navItem">Update Record</a>
+        <a href="{% url 'reports' %}" class="navItem">Reports</a>
+        <a href="#" class="navItem">Log Out</a>
+    </div>
+    <div class="mainBody">
+        {% block body %} {% endblock %}
+    </div>
+    <div class="footer">
+        <h5>&#169; 2022</h5>
+        <h4>Designed By: Lucky Computing</h4>
+    </div>
+</div>
+{#For adding Child JS#}
+{% block js %}{% endblock %}
+</body>
+</html>

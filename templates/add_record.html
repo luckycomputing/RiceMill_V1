@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Add Record{% endblock %}</title>
+    {#    This Template CSS#}
+    {% block additional_css %}
+        <link rel="stylesheet" href="{% static 'css/add.css' %}">
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    <div class="bodyContainer">
+        <form action="save" method="POST" id="form">
+            {% csrf_token %}
+            <div class="formElements">
+                <label for="ref_no">Ref. No.:
+                    <strong>{{ ref_no }}</strong>
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="token_no">Token. No.:
+                    <input type="text" name="token_no" id="token_no" maxlength="8">
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="agent_name">Agent Name:
+                    <input type="text" name="agent_name" id="agent_name" maxlength="20">
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="trip">Trip No.:
+                    <label for="trip_no1"><input type="radio" name="trip_no" id="trip_no1" value="1" checked>1st</label>
+                    <label for="trip_no2"><input type="radio" name="trip_no" id="trip_no2" value="2">2nd</label>
+                    <label for="trip_no3"><input type="radio" name="trip_no" id="trip_no3" value="3">3rd</label>
+                    <label for="trip_no4"><input type="radio" name="trip_no" id="trip_no4" value="4">4th</label>
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="date">Date:
+                    <input type="text" name="date" id="date" readonly>
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="vehicle_no">Vehicle No.:
+                    <input type="text" name="vehicle_no" id="vehicle_no" maxlength="10">
+                </label>
+            </div>
+            <div class="formElements">
+                {#                jute75 is known as Bora#}
+                <label for="jute75">Bora:
+                    <input type="number" name="jute75" id="jute75">
+                </label>
+            </div>
+            <div class="formElements">
+                {#                jute40 is known as Katta#}
+                <label for="jute40">Katta:
+                    <input type="number" name="jute40" id="jute40">
+                </label>
+            </div>
+            <div class="formElements">
+                {#                plastic40 is known as Plastic#}
+                <label for="plastic40">Plastic:
+                    <input type="number" name="plastic40" id="plastic40">
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="farmer_name">Farmer Name:
+                    <input type="text" name="farmer_name" id="farmer_name" maxlength="20">
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="farmer_address">Farmer Address:
+                    <input type="text" name="farmer_address" id="farmer_address" maxlength="20">
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="farmer_mob">Farmer Mob. No.:
+                    <input type="text" name="farmer_mob" id="farmer_mob" maxlength="10">
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="gross_weight">Gross Weight:
+                    <input type="number" name="gross_weight" id="gross_weight">
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="tier_weight">Tier Weight:
+                    <input type="number" name="tier_weight" id="tier_weight" onblur="trio_call()">
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="gt_weight">Gross Tier Difference:
+                    <input type="number" name="gt_weight" id="gt_weight" readonly>
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="bags_weight">Bags Weight:
+                    <input type="number" name="bags_weight" id="bags_weight" readonly>
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="net_weight">Net Weight (Qntl.):
+                    <input type="number" name="net_weight" id="net_weight" readonly>
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="loading">Loading:
+                    <input type="radio" name="loading_radio" id="loading_mill" onfocus="load()">Mill
+                    <input type="radio" name="loading_radio" id="loading_farmer" checked onblur="load_total()">Farmer
+                    Total: <input type="number" name="loading" id="loading" readonly>
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="unloading">Unloading:
+                    <input type="radio" name="unloading_radio" id="unloading_mill" onfocus="unload()">Mill
+                    <input type="radio" name="unloading_radio" id="unloading_farmer" checked onblur="unload_total()">Farmer
+                    Total: <input type="number" name="unloading" id="unloading" readonly>
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="unloading_point">Unloading Point:
+                    <input type="text" name="unloading_point" id="unloading_point" maxlength="30">
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="wb">Weighbridge:
+                    <label for="wb_operator_dev"><input type="radio" name="wb_operator" id="wb_operator_dev"
+                                                        value="Dev" checked>Dev</label>
+                    <label for="wb_operator_lokesh"><input type="radio" name="wb_operator" id="wb_operator_lokesh"
+                                                           value="Lokesh">Lokesh</label>
+                    <label for="wb_operator_jitendra"><input type="radio" name="wb_operator" id="wb_operator_jitendra"
+                                                             value="Jitedra">Jitendra</label>
+                    <label for="wb_operator_ganesh"><input type="radio" name="wb_operator" id="wb_operator_ganesh"
+                                                           value="Ganesh">Ganesh</label>
+                    <label for="wb_operator_derha"><input type="radio" name="wb_operator" id="wb_operator_derha"
+                                                          value="Derha">Derha</label>
+                    <label for="wb_operator_lomash"><input type="radio" name="wb_operator" id="wb_operator_lomash"
+                                                           value="Loamsh">Lomash</label>
+                    <label for="wb_operator_bharat"><input type="radio" name="wb_operator" id="wb_operator_bharat"
+                                                           value="Bharat">Bharat</label>
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="rate">Rate:
+                    <input type="number" name="rate" id="rate" onblur="gross_total_calc(); hemali_calc()">
+                </label>
+            </div>
+            <div class="formElements">
+                <label for="weighbridge">Jute Bags Status:
+                    <label for="weighbridge_operator_jama"><input type="radio" name="jute_bags"
+                                                                  id="weighbridge_operator_jama"
+                                                                  value="Jama">Jama</label>
+                    <label for="weighbridge_operator_le"><input type="radio" name="jute_bags"
+                                                                id="weighbridge_operator_le" value="Le Gaya" checked>Le
+                        Gaya</label>
+                </label>
+            </div>
+            <div>
+                <fieldset>
+                    <legend id="legend">For Office Use Only</legend>
+                    <div class="formElements">
+                        <label for="gross_total">Gross Total:
+                            <input type="number" name="gross_total" id="gross_total" readonly>
+                        </label>
+                    </div>
+                    <div class="formElements">
+                        <label for="deduction">Deduction:
+                            <label for="deduction0"></label><input type="radio" name="deduction" id="deduction0"
+                                                                   onchange="deduct()" checked>0%
+                            <label for="deduction1"></label><input type="radio" name="deduction" id="deduction1"
+                                                                   onchange="deduct()">1%
+                            <label for="deduction1_5"></label><input type="radio" name="deduction" id="deduction1_5"
+                                                                     onchange="deduct()">1.5%
+                            <input type="number" name="deduction" id="deduction" readonly required>
+                        </label>
+                    </div>
+                    <div class="formElements">
+                        <label for="wb_charges">WB Charges:
+                            <input type="number" name="wb_charges" id="wb_charges" readonly value="70">
+                        </label>
+                    </div>
+                    <div class="formElements">
+                        <label for="lo_unlo_charges">Loading & Unloading Charges:
+                            <input type="number" name="lo_unlo_charges" id="lo_unlo_charges" readonly>
+                        </label>
+                    </div>
+                    <div class="formElements">
+                        <label for="our_vehicle_charges">Our Vehicle Charges:
+                            <input type="number" name="our_vehicle_charges" id="our_vehicle_charges"
+                                   onchange="vehicle_rent_calc()">
+                            Total: <input type="number" name="our_vehicle_charges_total" id="our_vehicle_charges_total"
+                                          readonly>
+                        </label>
+                    </div>
+                    <div class="formElements">
+                        <label for="agent_commission_total">Agent Commission:
+                            <label for="0"></label><input type="radio" name="agent_commission" id="0" checked
+                                                          onchange="agent_commission_cal()">Rs.0
+                            <label for="2"></label><input type="radio" name="agent_commission" id="2"
+                                                          onchange="agent_commission_cal()">Rs.2
+                            <label for="3"></label><input type="radio" name="agent_commission" id="3"
+                                                          onchange="agent_commission_cal()">Rs.3
+                            <label for="4"></label><input type="radio" name="agent_commission" id="4"
+                                                          onchange="agent_commission_cal()">Rs.4
+                            <label for="5"></label><input type="radio" name="agent_commission" id="5"
+                                                          onchange="agent_commission_cal()">Rs.5
+                            <input type="number" name="agent_commission_total" id="agent_commission_total" readonly
+                                   required>
+                        </label>
+                    </div>
+                    <div class="formElements">
+                        <label for="other_exp">Other Expense:
+                            <input type="number" name="other_exp" id="other_exp">
+                            Remarks: <input type="text" name="other_exp_remark" id="other_exp_remark">
+                        </label>
+                    </div>
+                    <div class="formElements">
+                        <label for="advance">Advance:
+                            <input type="number" name="advance" id="advance" onblur="net_total_calc()">
+                        </label>
+                    </div>
+                    <div class="formElements">
+                        <label for="net_total">Net Total:
+                            <input type="number" name="net_total" id="net_total" readonly required>
+                        </label>
+                    </div>
+                </fieldset>
+            </div>
+            {#            Code for Form Buttons#}
+            <div>
+                <input type="submit" class="btn">
+                {#                <input type="reset" class="btn">#}
+            </div>
+        </form>
+        <div class="records">
+            <h2 id="heading">Records</h2>
+            <table class="tbl">
+                <tr>
+                    <th>Ref. No.</th>
+                    <th>Date</th>
+                    <th>Agent Name</th>
+                    <th>Farmer Name</th>
+                    <th>Bardana</th>
+                </tr>
+                {#                Data from Database#}
+                {% for column in PaddyPurchase %}
+                    <tr>
+                        <td>{{ column.ref_no }}</td>
+                        <td>{{ column.date }}</td>
+                        <td>{{ column.agent_name }}</td>
+                        <td>{{ column.farmer_name }}</td>
+                        <td>{{ column.jute_bags }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+    </div>
+{% endblock %}
+{% block js %}
+    <script src="{% static 'js/add.js' %}"></script>
+{% endblock %}
+</body>
+</html>

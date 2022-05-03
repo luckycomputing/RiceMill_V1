@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+{% extends 'base.html' %}
+{% load static %}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Reports{% endblock %}</title>
+    {#    This Template CSS#}
+    {% block additional_css %}
+        <link rel="stylesheet" href="{% static 'css/reports.css' %}">
+    {% endblock %}
+</head>
+<body>
+{% block body %}
+    <div class="container">
+        <div class="heading">
+            <h1>Download Reports</h1>
+        </div>
+        <div class="records">
+            <table class="tbl">
+                <tr>
+                    <th>Ref. No.</th>
+                    <th>Token. No.</th>
+                    <th>Date</th>
+                    <th>Vehicle No.</th>
+                    <th>Agent Name</th>
+                    <th>Farmer Name</th>
+                    <th>Net Weight</th>
+                    <th>Unloading Point</th>
+                    <th>Rate</th>
+                    <th>Bardana</th>
+                    <th>Net Total</th>
+                </tr>
+                {#                Data from Database#}
+                {% for column in PaddyPurchase %}
+                    <tr>
+                        <td>{{ column.ref_no }}</td>
+                        <td>{{ column.token_no }}</td>
+                        <td>{{ column.date }}</td>
+                        <td>{{ column.vehicle_no }}</td>
+                        <td>{{ column.agent_name }}</td>
+                        <td>{{ column.farmer_name }}</td>
+                        <td>{{ column.net_weight }}</td>
+                        <td>{{ column.unloading_point }}</td>
+                        <td>{{ column.rate }}</td>
+                        <td>{{ column.jute_bags }}</td>
+                        <td>{{ column.net_total }}</td>
+                    </tr>
+                {% endfor %}
+            </table>
+            <form action="{% url 'download_pdf' %}" method="POST" id="download_form">
+                {% csrf_token %}
+                <label for="ref_no_for_download">Ref No.: <input type="number" name="ref_no_for_download" max="999"></label>
+                <input type="submit" value="Download Report">
+            </form>
+        </div>
+    </div>
+{% endblock %}
+</body>
+</html>
